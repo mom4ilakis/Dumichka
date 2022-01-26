@@ -1,16 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LetterBox = (props) => <div className={props.className}> {props.letter} </div>;
-
-// const emptyRow = (props) =>  [...Array(5).keys()].map(() => <LetterBox key={props.key}/>);
+const LetterBox = ( props ) => <div className={props.className}> {props.letter} </div>;
 
 class Board extends React.Component {
-    constructor(props){
-        super(props);
+    constructor( props ) {
+        super( props );
         this.answer = 'weary';
         this.state = {
-            attempts: [...Array(6).keys()].map(() => ''),
+            attempts: [...Array( 6 ).keys()].map(() => ''),
             currentAttempt: 0,
             gameFinished: false
         };
@@ -28,58 +26,59 @@ class Board extends React.Component {
         document.removeEventListener('keyup', this.handleKeyPress);
     };
 
-    handleKeyPress = (event) => {
+    handleKeyPress = ( event ) => {
         const { key } = event;
         const currentWordLen = this.state.attempts[this.state.currentAttempt].length;
 
-        if ( key.length === 1 && key.match(/[a-z]/i) && currentWordLen < 5) {
-            this.setState((state) => {
-                const {currentAttempt, attempts} = state;
+        if ( key.length === 1 && key.match(/[a-z]/i) && currentWordLen < 5 ) {
+            this.setState(( state ) => {
+                const { currentAttempt, attempts } = state;
                 const newWord = attempts[currentAttempt] + key;
                 const newAttempts = attempts;
                 newAttempts[currentAttempt] = newWord;
                 return { attempts: newAttempts };
-            });
+            } );
         }
-        if (key === 'Enter') {
-            this.setState((state) => {
-                const {currentAttempt, attempts} = state;
+        if ( key === 'Enter' ) {
+            this.setState(( state ) => {
+                const { currentAttempt, attempts } = state;
                 return {
-                    gameFinished: this.answer === attempts[currentAttempt],
+                    gameFinished: this.answer === attempts[currentAttempt] || currentAttempt >= 6,
                     currentAttempt: currentAttempt + 1
                 };
             },
             () => this.state.gameFinished && this.onFinish()
             );
         }
-        if (key === 'Backspace') {
-            if (currentWordLen > 0){
-                this.setState((state) => {
-                    const {currentAttempt, attempts} = state;
-                    const newWord = attempts[currentAttempt].slice(0, currentWordLen-1);
+        if ( key === 'Backspace' ) {
+            if ( currentWordLen > 0 ) {
+                this.setState(( state ) => {
+                    const { currentAttempt, attempts } = state;
+                    const newWord = attempts[currentAttempt].slice( 0, currentWordLen-1 );
                     const newAttempts = attempts;
                     newAttempts[currentAttempt] = newWord;
-                    return { attempts: newAttempts};
-                });
+                    return { attempts: newAttempts };
+                } );
             }
         }
     };
 
     renderBoard = () => {
-        const {attempts, currentAttempt} = this.state;
-        return attempts.map((word, index) =>
+        const { attempts, currentAttempt } = this.state;
+        return attempts.map(( word, index ) =>
             <div key={`row-${index}-${word}`} className='row'>
                 {
-                    [...Array(5).keys()].map((char_index) => {
+                    [...Array( 5 ).keys()].map(( char_index ) => {
                         const letter = word.charAt(char_index);
-                        let color = currentAttempt!==index && letter && (letter === this.answer.charAt(char_index) ? 'green' : this.answer.includes(letter) ? 'yellow' :  'gray');
+                        let color = currentAttempt!== index && letter && (letter === this.answer.charAt(char_index) ? 'green' : this.answer.includes(letter) ? 'yellow' :  'gray');
                         const className = 'letterBox ' + color;
                         const key = `${index}-${letter}-${char_index}`;
                         return <LetterBox key={key} letter={letter} className={className}/>;
-                    })
+                    } )
                 }
             </div>
-        );};
+        );
+    };
 
     render = () => {
         return (

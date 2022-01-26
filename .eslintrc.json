@@ -33,6 +33,32 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "keyword-spacing": [
+            "error",
+            {
+                "before": true,
+                "after": true
+            }
+        ],
+        "camelcase": [0, { "properties": "never" }],
+        "array-bracket-spacing": [
+            "error"
+        ],
+        "arrow-spacing": [
+            "error",
+            {
+                "before": true,
+                "after": true
+            }
+
+        ],
+        "brace-style": "error",
+        "comma-spacing": "error",
+        "comma-dangle": "error",
+        "no-trailing-spaces": "error",
+        "space-before-blocks": "error",
+        "object-curly-spacing": ["error", "always"]
+
     }
 }
