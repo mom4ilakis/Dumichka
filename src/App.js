@@ -1,9 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { checkWord } from './utils/Utils';
 import { Button, Letterbox } from './styles';
 
-const LetterBox = (props) => <div className={props.className}> {props.letter} </div>;
 
 class Board extends React.Component {
     constructor(props) {
@@ -151,16 +149,6 @@ class Board extends React.Component {
         );
     };
 }
-
-LetterBox.propTypes = {
-    className: PropTypes.string,
-    letter: PropTypes.string
-};
-
-LetterBox.defaultProps = {
-    className: 'letterBox',
-    letter: ''
-};
 
 
 function App() {

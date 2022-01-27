@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+import LetterBox from './LetterBox';
 /* eslint-disable semi */
 
 export const Button = styled.button`
@@ -11,7 +11,7 @@ export const Button = styled.button`
   padding: 0.25em 1em;
 `
 
-export const Letterbox = styled.div`
+export const Letterbox = styled(LetterBox)`
     width: 100%;
     display: inline-flex;
     justify-content: center;
@@ -24,6 +24,5 @@ export const Letterbox = styled.div`
     color: var(--tile-text-color);
     text-transform: uppercase;
     user-select: none;
-    letter: ${props => props?.letter};
 `
 
