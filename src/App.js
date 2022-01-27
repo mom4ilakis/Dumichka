@@ -8,16 +8,19 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         const gameState = this.loadFromLocalStorage();
-        const { answer, attempts, currentAttempt, gameFinished } = gameState;
+        const { answer, attempts, currentAttempt, gameFinished, evaluations } = gameState;
         this.answer = answer || this.generateTodayAnswer();
         this.state = {
             attempts: attempts || [...Array(6).keys()].map(() => ''),
             currentAttempt: currentAttempt || 0,
-            gameFinished: gameFinished || false
+            gameFinished: gameFinished || false,
+            evaluations: evaluations || []
         };
     }
 
     componentDidMount = () => {
+        this.saveToLocalStorage();
+        this.loadFromLocalStorage();
         const { gameFinished } = this.state;
         if (!gameFinished) {
             document.addEventListener('keyup', this.handleKeyPress);
@@ -40,15 +43,16 @@ class Board extends React.Component {
 
     loadFromLocalStorage = () => {
         console.log('Loading from LS');
-        const parsedGameState = JSON.parse(window.localStorage.getItem('gameState'));
+        const parsedGameState = window.localStorage.getItem('gameState');
         if (parsedGameState) {
             const answer = parsedGameState.answer;
-            const { attempts, currentAttempt, gameFinished } = JSON.parse(parsedGameState.boardState);
+            const { attempts, currentAttempt, gameFinished, evaluations } = parsedGameState;
             return {
-                attempts,
-                currentAttempt,
-                gameFinished,
-                answer
+                attempts: attempts,
+                currentAttempt: currentAttempt,
+                gameFinished: gameFinished,
+                answer: answer,
+                evaluations: evaluations
 
             };
         } else {
@@ -56,14 +60,15 @@ class Board extends React.Component {
                 attempts: undefined,
                 currentAttempt: undefined,
                 gameFinished: undefined,
-                answer: undefined
+                answer: undefined,
+                evaluations: undefined
             };
         }
     };
 
     saveToLocalStorage = () => {
         console.log('Saving to LS');
-        window.localStorage.setItem('gameState', JSON.stringify({ 'boardState': JSON.stringify(this.state), 'answer': this.answer }));
+        window.localStorage.setItem('gameState', JSON.stringify({ 'boardState': this.state, 'answer': this.answer }));
     };
 
     handleKeyPress = (event) => {
@@ -81,13 +86,13 @@ class Board extends React.Component {
         }
         if (key === 'Enter' && this.isValidAnswer()) {
             this.setState((state) => {
-                const { currentAttempt, attempts } = state;
-                var todaysWord = this.generateTodayAnswer().toString();
-                var evaluation = checkWord(attempts[currentAttempt], todaysWord);
+                const { currentAttempt, attempts, evaluations } = state;
+                var evaluation = checkWord(attempts[currentAttempt], this.answer);
+                evaluations.push(evaluation);
                 console.log(evaluation);
                 return {
-                    gameFinished: this.answer === attempts[currentAttempt] || currentAttempt >= 6,
-                    currentAttempt: currentAttempt + 1
+                    currentAttempt: currentAttempt + 1,
+                    gameFinished: this.answer === attempts[currentAttempt] || currentAttempt >= 6
                 };
             },
             () => {
@@ -111,6 +116,7 @@ class Board extends React.Component {
 
     renderBoard = () => {
         const { attempts, currentAttempt } = this.state;
+        this.loadFromLocalStorage();
         return attempts.map((word, index) =>
             <div key={`row-${index}-${word}`} className='row'>
                 {
