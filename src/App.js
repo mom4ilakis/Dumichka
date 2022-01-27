@@ -2,6 +2,8 @@ import React from 'react';
 import { checkWord } from './utils/Utils';
 import { Button, Letterbox } from './styles';
 
+import OnScreenKeyboard from './OnScreenKeyboard';
+
 const COLOUR_MAPPING = {
     correct: 'green',
     present: 'yellow',
@@ -103,9 +105,9 @@ class Board extends React.Component {
             }
             );
         }
-        if (key === 'Backspace') {
-            if (currentWordLen > 0) {
-                this.setState((state) => {
+        if (['Backspace', 'DEL'].includes(key)) {
+            if ( currentWordLen > 0 ) {
+                this.setState(( state ) => {
                     const { currentAttempt, attempts } = state;
                     const newWord = attempts[currentAttempt].slice(0, currentWordLen - 1);
                     const newAttempts = attempts;
@@ -143,7 +145,7 @@ class Board extends React.Component {
                 </div>
                 <Button onClick={this.saveToLocalStorage}>Click to Save to Storage(DEBUG)</Button>
                 <Button onClick={this.loadFromLocalStorage}>Click to Load to Storage(DEBUG)</Button>
-
+                <OnScreenKeyboard onClick={this.handleKeyPress}/>
             </React.Fragment>
         );
     };
