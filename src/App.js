@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { checkWord } from './utils/Utils';
+import { Button, Letterbox } from './styles';
 
 const LetterBox = (props) => <div className={props.className}> {props.letter} </div>;
 
@@ -128,7 +129,7 @@ class Board extends React.Component {
                         let color = currentAttempt !== index && letter && (this.state.evaluations[index][char_index] === 'correct' ? 'green' : this.state.evaluations[index][char_index] === 'present' ? 'yellow' : 'gray');
                         const className = 'letterBox ' + color;
                         const key = `${index}-${letter}-${char_index}`;
-                        return <LetterBox key={key} letter={letter} className={className} />;
+                        return <Letterbox key={key} letter={letter} className={className} />;
                     })
                 }
             </div>
@@ -143,8 +144,8 @@ class Board extends React.Component {
                         this.renderBoard()
                     }
                 </div>
-                <button onClick={this.saveToLocalStorage}>Click to Save to Storage(DEBUG)</button>
-                <button onClick={this.loadFromLocalStorage}>Click to Load to Storage(DEBUG)</button>
+                <Button onClick={this.saveToLocalStorage}>Click to Save to Storage(DEBUG)</Button>
+                <Button onClick={this.loadFromLocalStorage}>Click to Load to Storage(DEBUG)</Button>
 
             </React.Fragment>
         );
