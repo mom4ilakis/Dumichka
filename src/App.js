@@ -47,7 +47,7 @@ class Board extends React.Component {
         console.log(parsedGameState);
         if (parsedGameState) {
             const answer = parsedGameState.answer;
-            const { attempts, currentAttempt, gameFinished, evaluations } = parsedGameState;
+            const { attempts, currentAttempt, gameFinished, evaluations } = parsedGameState.boardState;
             return {
                 attempts: attempts,
                 currentAttempt: currentAttempt,
@@ -118,7 +118,6 @@ class Board extends React.Component {
 
     renderBoard = () => {
         const { attempts, currentAttempt } = this.state;
-        this.loadFromLocalStorage();
         return attempts.map((word, index) =>
             <div key={`row-${index}-${word}`} className='row'>
                 {
