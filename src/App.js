@@ -90,9 +90,10 @@ class Board extends React.Component {
                 var evaluation = checkWord(attempts[currentAttempt], this.answer);
                 evaluations.push(evaluation);
                 console.log(evaluation);
+                var attemptBuffer = currentAttempt + 1;
                 return {
                     currentAttempt: currentAttempt + 1,
-                    gameFinished: this.answer === attempts[currentAttempt] || currentAttempt >= 6
+                    gameFinished: this.answer === attempts[currentAttempt] || attemptBuffer >= 6
                 };
             },
             () => {
@@ -122,7 +123,7 @@ class Board extends React.Component {
                 {
                     [...Array(5).keys()].map((char_index) => {
                         const letter = word.charAt(char_index);
-                        let color = currentAttempt !== index && letter && (letter === this.answer.charAt(char_index) ? 'green' : this.answer.includes(letter) ? 'yellow' : 'gray');
+                        let color = currentAttempt !== index && letter && (this.state.evaluations[index][char_index] === 'correct' ? 'green' : this.state.evaluations[index][char_index] === 'present' ? 'yellow' : 'gray');
                         const className = 'letterBox ' + color;
                         const key = `${index}-${letter}-${char_index}`;
                         return <LetterBox key={key} letter={letter} className={className} />;
