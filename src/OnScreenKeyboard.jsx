@@ -19,7 +19,7 @@ const OnScreenKeyboard = (props) => {
                             zip(...row).map(([letter, keyhandler]) =>
                                 <div key={`keyboard-${letter}`}
                                     onClick={keyhandler}
-                                    className='keycap'
+                                    className={`keycap ${props.colorLetter(letter)}`}
                                 >
                                     {letter}
                                 </div>
@@ -34,7 +34,8 @@ const OnScreenKeyboard = (props) => {
 };
 
 OnScreenKeyboard.propTypes = {
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    colorLetter: PropTypes.func
 };
 
 export default OnScreenKeyboard;

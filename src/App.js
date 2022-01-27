@@ -9,6 +9,14 @@ const COLOUR_MAPPING = {
     present: 'yellow',
     absent: 'gray'
 };
+
+const LETTER_COLORS_MAP = 'abcdefghijklmnopqrstuvwxyz'.split('').reduce((obj, letter) => {
+    obj[letter] = '';
+    return obj;
+},
+{});
+
+
 class Board extends React.Component {
     constructor(props) {
         super(props);
@@ -45,6 +53,8 @@ class Board extends React.Component {
     generateTodayAnswer = () => 'sissy';
 
     isValidAnswer = () => this.state.attempts[this.state.currentAttempt].length === 5;
+
+    colorLeter = (letter) => LETTER_COLORS[letter];
 
     loadFromLocalStorage = () => {
         const parsedGameState = JSON.parse(window.localStorage.getItem('gameState'));
