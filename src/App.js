@@ -84,6 +84,7 @@ class Board extends React.Component {
                 newAttempts[currentAttempt] = newWord;
                 return { attempts: newAttempts };
             });
+            this.saveToLocalStorage();
         }
         if (key === 'Enter' && this.isValidAnswer()) {
             this.setState((state) => {
@@ -112,6 +113,7 @@ class Board extends React.Component {
                     newAttempts[currentAttempt] = newWord;
                     return { attempts: newAttempts };
                 });
+                this.saveToLocalStorage();
             }
         }
     };
