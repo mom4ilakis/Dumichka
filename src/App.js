@@ -2,7 +2,11 @@ import React from 'react';
 import { checkWord } from './utils/Utils';
 import { Button, Letterbox } from './styles';
 
-
+const COLOUR_MAPPING = {
+    correct: 'green',
+    present: 'yellow',
+    absent: 'gray'
+};
 class Board extends React.Component {
     constructor(props) {
         super(props);
@@ -41,9 +45,7 @@ class Board extends React.Component {
     isValidAnswer = () => this.state.attempts[this.state.currentAttempt].length === 5;
 
     loadFromLocalStorage = () => {
-        console.log('Loading from LS');
         const parsedGameState = JSON.parse(window.localStorage.getItem('gameState'));
-        console.log(parsedGameState);
         if (parsedGameState) {
             const answer = parsedGameState.answer;
             const { attempts, currentAttempt, gameFinished, evaluations } = parsedGameState.boardState;
@@ -67,7 +69,6 @@ class Board extends React.Component {
     };
 
     saveToLocalStorage = () => {
-        console.log('Saving to LS');
         window.localStorage.setItem('gameState', JSON.stringify({ 'boardState': this.state, 'answer': this.answer }));
     };
 
@@ -90,7 +91,6 @@ class Board extends React.Component {
                 const { currentAttempt, attempts, evaluations } = state;
                 const evaluation = checkWord(attempts[currentAttempt], this.answer);
                 evaluations.push(evaluation);
-                console.log(evaluation);
                 const attemptBuffer = currentAttempt + 1;
                 return {
                     currentAttempt: currentAttempt + 1,
@@ -118,16 +118,15 @@ class Board extends React.Component {
     };
 
     renderBoard = () => {
-        const { attempts, currentAttempt } = this.state;
+        const { attempts, currentAttempt, evaluations } = this.state;
         return attempts.map((word, index) =>
             <div key={`row-${index}-${word}`} className='row'>
                 {
                     [...Array(5).keys()].map((char_index) => {
                         const letter = word.charAt(char_index);
-                        let color = currentAttempt !== index && letter && (this.state.evaluations[index][char_index] === 'correct' ? 'green' : this.state.evaluations[index][char_index] === 'present' ? 'yellow' : 'gray');
-                        const className = 'letterBox ' + color;
+                        let color = currentAttempt !== index && letter && COLOUR_MAPPING[evaluations[index][[char_index]]];
                         const key = `${index}-${letter}-${char_index}`;
-                        return <Letterbox key={key} letter={letter} className={className} />;
+                        return <Letterbox key={key} letter={letter} color={color} />;
                     })
                 }
             </div>

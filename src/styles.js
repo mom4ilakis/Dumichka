@@ -12,7 +12,9 @@ export const Button = styled.button`
 `
 
 export const Letterbox = styled(LetterBox)`
-    width: 100%;
+    width: 10vw;
+    height: 10vh;
+    border: 1px solid black;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -21,7 +23,7 @@ export const Letterbox = styled(LetterBox)`
     font-weight: bold;
     vertical-align: middle;
     box-sizing: border-box;
-    color: var(--tile-text-color);
+    background-color: ${props => props?.color || 'azure'};
     text-transform: uppercase;
     user-select: none;
 `
