@@ -19,7 +19,7 @@ class Board extends React.Component {
     }
 
     componentDidMount = () => {
-        this.saveToLocalStorage();
+        console.log('mounting');
         this.loadFromLocalStorage();
         const { gameFinished } = this.state;
         if (!gameFinished) {
@@ -43,7 +43,8 @@ class Board extends React.Component {
 
     loadFromLocalStorage = () => {
         console.log('Loading from LS');
-        const parsedGameState = window.localStorage.getItem('gameState');
+        const parsedGameState = JSON.parse(window.localStorage.getItem('gameState'));
+        console.log(parsedGameState);
         if (parsedGameState) {
             const answer = parsedGameState.answer;
             const { attempts, currentAttempt, gameFinished, evaluations } = parsedGameState;
@@ -87,10 +88,10 @@ class Board extends React.Component {
         if (key === 'Enter' && this.isValidAnswer()) {
             this.setState((state) => {
                 const { currentAttempt, attempts, evaluations } = state;
-                var evaluation = checkWord(attempts[currentAttempt], this.answer);
+                const evaluation = checkWord(attempts[currentAttempt], this.answer);
                 evaluations.push(evaluation);
                 console.log(evaluation);
-                var attemptBuffer = currentAttempt + 1;
+                const attemptBuffer = currentAttempt + 1;
                 return {
                     currentAttempt: currentAttempt + 1,
                     gameFinished: this.answer === attempts[currentAttempt] || attemptBuffer >= 6

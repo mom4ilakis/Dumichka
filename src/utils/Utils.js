@@ -1,8 +1,8 @@
 export function checkWord(guess, solution) {
 
     //TODO: if allowed words don't contain guess -> invalid
-    var evaluation = [];
-    var letterBuffer = [];
+    let evaluation = [];
+    let letterBuffer = [];
     solution.split('').forEach((letter, i) => {
         if (guess[i] !== letter) {
             letterBuffer.push(letter);
