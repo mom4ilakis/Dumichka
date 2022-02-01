@@ -1,11 +1,11 @@
 import React from 'react';
-import { checkWord } from './utils/Utils';
-import { GameViewPort, Header, Letterbox, Row } from './styles';
 
-import OnScreenKeyboard from './OnScreenKeyboard';
+import { checkWord } from './utils/Utils';
+import { GameViewPort, Header, Letterbox, Row, COLORS, OnScreenKeyboardStyled } from './styles';
+
 
 const COLOUR_MAPPING = {
-    correct: '#528c53', present: '#b79e47', absent: '#3a3a3c'
+    correct: COLORS.green, present: COLORS.yellow, absent: COLORS.gray
 };
 
 const LETTER_COLORS_MAP = 'abcdefghijklmnopqrstuvwxyz'.split('').reduce((obj, letter) => {
@@ -165,7 +165,7 @@ class Board extends React.Component {
                         this.renderBoard()
                     }
                 </div>
-                <OnScreenKeyboard onClick={this.handleKeyPress} colorLetter={this.colorLetter}/>
+                <OnScreenKeyboardStyled onClick={this.handleKeyPress} colorLetter={this.colorLetter}/>
             </React.Fragment>
         );
     };
