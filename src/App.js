@@ -2,9 +2,18 @@ import React from 'react';
 import { checkWord } from './utils/Utils';
 import { GameViewPort, Header, Letterbox, Row } from './styles';
 
+import OnScreenKeyboard from './OnScreenKeyboard';
+
 const COLOUR_MAPPING = {
     correct: '#528c53', present: '#b79e47', absent: '#3a3a3c'
 };
+
+const LETTER_COLORS_MAP = 'abcdefghijklmnopqrstuvwxyz'.split('').reduce((obj, letter) => {
+    obj[letter] = '';
+    return obj;
+},
+{});
+
 
 class Board extends React.Component {
     constructor(props) {
@@ -42,6 +51,23 @@ class Board extends React.Component {
     generateTodayAnswer = () => 'sissy';
 
     isValidAnswer = () => this.state.attempts[this.state.currentAttempt].length === 5;
+
+    updateColorForLetter = (letter, color) => {
+        const prevColor = LETTER_COLORS_MAP[letter];
+        if (!prevColor) {
+            LETTER_COLORS_MAP[letter] = color;
+            return;
+        }
+        if (prevColor && prevColor !=='green' && prevColor !== color) {
+            if (prevColor === 'gray') {
+                LETTER_COLORS_MAP[letter] = color;
+            } else if (prevColor === 'yellow' && color === 'green') {
+                LETTER_COLORS_MAP[letter] = color;
+            }
+        }
+    };
+
+    colorLetter = (letter) => LETTER_COLORS_MAP[letter];
 
     loadFromLocalStorage = () => {
         const parsedGameState = JSON.parse(window.localStorage.getItem('gameState'));
@@ -100,9 +126,9 @@ class Board extends React.Component {
                 this.state.gameFinished && this.onFinish();
             });
         }
-        if (key === 'Backspace') {
-            if (currentWordLen > 0) {
-                this.setState((state) => {
+        if (['Backspace', 'DEL'].includes(key)) {
+            if ( currentWordLen > 0 ) {
+                this.setState(( state ) => {
                     const { currentAttempt, attempts } = state;
                     const newWord = attempts[currentAttempt].slice(0, currentWordLen - 1);
                     const newAttempts = attempts;
@@ -122,6 +148,7 @@ class Board extends React.Component {
                     [...Array(5).keys()].map((char_index) => {
                         const letter = word.charAt(char_index);
                         let color = currentAttempt !== index && letter && COLOUR_MAPPING[evaluations[index][[char_index]]];
+                        this.updateColorForLetter(letter, color);
                         const key = `${index}-${letter}-${char_index}`;
                         return <Letterbox key={key} letter={letter} color={color}/>;
                     })
@@ -138,7 +165,7 @@ class Board extends React.Component {
                         this.renderBoard()
                     }
                 </div>
-
+                <OnScreenKeyboard onClick={this.handleKeyPress} colorLetter={this.colorLetter}/>
             </React.Fragment>
         );
     };
