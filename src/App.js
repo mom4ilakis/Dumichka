@@ -2,6 +2,8 @@ import React from 'react';
 
 import { checkWord } from './utils/Utils';
 import { GameViewPort, Header, Letterbox, Row, COLORS, OnScreenKeyboardStyled } from './styles';
+import propTypes from 'prop-types';
+import styled from 'styled-components';
 
 
 const COLOUR_MAPPING = {
@@ -159,25 +161,37 @@ class Board extends React.Component {
 
     render = () => {
         return (
-            <React.Fragment>
+            <div className={this.props.className}>
                 <div>
                     {
                         this.renderBoard()
                     }
                 </div>
                 <OnScreenKeyboardStyled onClick={this.handleKeyPress} colorLetter={this.colorLetter}/>
-            </React.Fragment>
+            </div>
         );
     };
 }
 
+Board.propTypes = {
+    className: propTypes.string
+};
+
+const BoardStyled = styled(Board)`
+    display: grid;
+    grid-template-columns 100vw;
+    grid-template-rows auto auto;
+    grid-row-gap: 5vh;
+    align-items: center;
+    justify-items: center;
+`;
 
 function App() {
     return (
         <>
             <Header>WORDLE</Header>
             <GameViewPort>
-                <Board/>
+                <BoardStyled/>
             </GameViewPort>
         </>
     );
