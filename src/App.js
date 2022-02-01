@@ -1,13 +1,11 @@
 import React from 'react';
 import { checkWord } from './utils/Utils';
-import { Button, Letterbox } from './styles';
+import { GameViewPort, Header, Letterbox, Row } from './styles';
 
 import OnScreenKeyboard from './OnScreenKeyboard';
 
 const COLOUR_MAPPING = {
-    correct: 'green',
-    present: 'yellow',
-    absent: 'gray'
+    correct: '#528c53', present: '#b79e47', absent: '#3a3a3c'
 };
 
 const LETTER_COLORS_MAP = 'abcdefghijklmnopqrstuvwxyz'.split('').reduce((obj, letter) => {
@@ -123,12 +121,10 @@ class Board extends React.Component {
                     currentAttempt: currentAttempt + 1,
                     gameFinished: this.answer === attempts[currentAttempt] || attemptBuffer >= 6
                 };
-            },
-            () => {
+            }, () => {
                 this.saveToLocalStorage();
                 this.state.gameFinished && this.onFinish();
-            }
-            );
+            });
         }
         if (['Backspace', 'DEL'].includes(key)) {
             if ( currentWordLen > 0 ) {
@@ -147,30 +143,28 @@ class Board extends React.Component {
     renderBoard = () => {
         const { attempts, currentAttempt, evaluations } = this.state;
         return attempts.map((word, index) =>
-            <div key={`row-${index}-${word}`} className='row'>
+            <Row key={`row-${index}-${word}`}>
                 {
                     [...Array(5).keys()].map((char_index) => {
                         const letter = word.charAt(char_index);
                         let color = currentAttempt !== index && letter && COLOUR_MAPPING[evaluations[index][[char_index]]];
                         this.updateColorForLetter(letter, color);
                         const key = `${index}-${letter}-${char_index}`;
-                        return <Letterbox key={key} letter={letter} color={color} />;
+                        return <Letterbox key={key} letter={letter} color={color}/>;
                     })
                 }
-            </div>
+            </Row>
         );
     };
 
     render = () => {
         return (
             <React.Fragment>
-                <div className='board'>
+                <div>
                     {
                         this.renderBoard()
                     }
                 </div>
-                <Button onClick={this.saveToLocalStorage}>Click to Save to Storage(DEBUG)</Button>
-                <Button onClick={this.loadFromLocalStorage}>Click to Load to Storage(DEBUG)</Button>
                 <OnScreenKeyboard onClick={this.handleKeyPress} colorLetter={this.colorLetter}/>
             </React.Fragment>
         );
@@ -180,9 +174,12 @@ class Board extends React.Component {
 
 function App() {
     return (
-        <div className="App">
-            <Board />
-        </div>
+        <>
+            <Header>WORDLE</Header>
+            <GameViewPort>
+                <Board/>
+            </GameViewPort>
+        </>
     );
 }
 
