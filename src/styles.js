@@ -1,10 +1,7 @@
 import styled from 'styled-components';
 
-import LetterBox from './components/LetterBox';
-import { OnScreenKeyboard, Keyrow, Keycap } from './components/OnScreenKeyboard';
 
-
-const COLORS = {
+export const COLORS = {
     gray: '#3a3a3c',
     black: '#121213',
     lightGray: '#d7dadc',
@@ -12,53 +9,13 @@ const COLORS = {
     yellow: '#b79e47'
 };
 
-const KeycapStyled = styled(Keycap)`
-    width: 5vw;
-    border: 1px solid lightgray;
-    border-radius: 5px;
-    margin: 5px;
-    padding: 0px 0px 5px 0px;
-    text-align: center;
-    font-size: 20px;
-    background-color: ${props => props.colorLetter(props.letter)}
-`;
-
-const KeyrowStyled = styled(Keyrow)`
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-`;
-
-const OnScreenKeyboardStyled = styled(OnScreenKeyboard)`
-    display: table;
-    color: aliceblue;
-`;
-
-const Letterbox = styled(LetterBox)`
-    width: 5rem;
-    height: 5rem;
-    border: 1px solid ${COLORS.gray};
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    line-height: 2rem;
-    font-weight: bold;
-    vertical-align: middle;
-    box-sizing: border-box;
-    background-color: ${props => props?.color || COLORS.black};
-    text-transform: uppercase;
-    user-select: none;
-    color: ${COLORS.lightGray};
-`;
-
-const BoardContainer = styled.div`
+export const BoardContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
 `;
 
-const GameBoard = styled.div`
+export const GameBoard = styled.div`
     display: grid;
     grid-template-rows: repeat(6, 1fr);
     grid-gap: 5px;
@@ -67,14 +24,16 @@ const GameBoard = styled.div`
     width: 350px;
     height: 420px;
 `;
-const GameViewPort = styled.div`
+
+export const GameViewPort = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
     width: auto;
     height: auto;
 `;
-const Row = styled.div`
+
+export const Row = styled.div`
     display: flex;
     margin-top: 0.5rem;
     flex-direction: row;
@@ -84,7 +43,8 @@ const Row = styled.div`
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 50px;
 `;
-const Header = styled.div`
+
+export const Header = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -99,16 +59,3 @@ const Header = styled.div`
     pointer-events: none;
     margin-bottom: 3rem;
 `;
-
-export {
-    COLORS,
-    Letterbox,
-    BoardContainer,
-    GameBoard,
-    GameViewPort,
-    Row,
-    Header,
-    KeycapStyled,
-    KeyrowStyled,
-    OnScreenKeyboardStyled
-};

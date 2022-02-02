@@ -10,8 +10,7 @@ LetterBox.propTypes = {
 };
 
 LetterBox.defaultProps = {
-    className: 'letterBox',
     letter: ''
 };
 
-export default LetterBox;
+export { LetterBox as LetterBoxUnstyled };
